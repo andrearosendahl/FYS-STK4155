@@ -39,6 +39,14 @@ def identity_der(z):
     return jnp.ones_like(z)
 
 
+def tanh(z): 
+    return jnp.tanh(z)
+
+
+def tanh_der(z): 
+    return 1 - jnp.tanh(z)**2
+
+
 def softmax(z):
     """Compute softmax values for each set of scores in the rows of the matrix z.
     Used with batched input data: one row of scores per sample."""

@@ -2,7 +2,7 @@
 import numpy as np
 from reading_noresm import read_noresm_cmor, Modelinfo, global_avg
 import functions_heatbudget as fhb
-
+import xarray as xr
 
 #Reading the NorESM data, for a specific model and time period
 def read_data(period="historical"):
@@ -16,11 +16,16 @@ def read_data(period="historical"):
         exps = "historical"
         activity_id = "CMIP"
 
-    else:
+    elif period == "ssp585":
         #Information of experiments in each period
         exps = "ssp585"
         activity_id = "ScenarioMIP"
-
+    elif period == "sample":
+        #Information of experiments in each period
+        exps = "historical"
+        activity_id = "CMIP"
+    else:
+        raise ValueError("Period must be either 'historical', 'ssp585', or 'sample'.")
 
     model = Modelinfo(name=modelname, activity_id=activity_id, expid=exps, realiz=realiz)
 
@@ -28,10 +33,14 @@ def read_data(period="historical"):
     if period == "historical":
         var = fhb.read_atmos_data(model=model,first_year = 1985,last_year = 2014)
         base = fhb.read_atmos_data(model=model,first_year = 1850,last_year = 1879)
-    else:
+    elif period == "ssp585":
         var = fhb.read_atmos_data(model=model,first_year = 2071,last_year = 2100)
-        base = fhb.read_atmos_data(model=model,first_year = 2015,last_year = 2029)
-    
+        model_base = Modelinfo(name=modelname, activity_id="CMIP", expid="historical", realiz=realiz)
+        base = fhb.read_atmos_data(model=model_base,first_year = 1985,last_year = 2014)
+    elif period == "sample":
+        var = xr.open_dataset("ds_sample.nc")
+        base = xr.open_dataset("base_sample.nc")
+
     return var, base
 
 

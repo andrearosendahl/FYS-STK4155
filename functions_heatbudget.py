@@ -32,7 +32,7 @@ def read_atmos_data(
 
     """
 
-    # noresm only provide rldscs at daily frequencies,
+    # noresm only provides rldscs at daily frequencies,
     # so need to upload that field seperately and
     # make monthly mean and then merge with the rest
     varlist = [
@@ -86,7 +86,7 @@ def read_atmos_data(
     rlnscs.attrs["standard_name"] = "clearsky_net_longwave_flux_surface"
 
     ds = xr.merge([ds, rlns.to_dataset(name="rlns"), rlnscs.to_dataset(name="rlnscs")])
-    return ds #.groupby("time.month").mean(dim="time")
+    return ds
     
 
 

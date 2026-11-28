@@ -219,6 +219,7 @@ def read_noresm_cmor(
         )
         if isinstance(model.filenames,list):
             # NOTE! if the reading crashes due to memory issues you may add chunks, i.e. parallel=True, chunks={"time":12}
+            time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
             with xr.open_mfdataset(
                 model.filenames,
                 concat_dim=dim,
@@ -227,6 +228,7 @@ def read_noresm_cmor(
                 coords="minimal",
                 join="override",
                 compat="override", #added this because of the merge problem with sea ice (ANDREA)
+                decode_times=time_coder, #added this because of serialisation warning with future time variables (ANDREA)
             ) as ds:
                 if "height" in ds.variables:
                     # Datasets for variables @ a given height e.g. 2 m temperature, 10 m surface temperature

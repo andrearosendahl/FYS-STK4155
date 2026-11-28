@@ -1,0 +1,25 @@
+name: SEB_NN 
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12  
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - xarray
+  - seaborn
+  - jupyter
+  - ipykernel
+  - jupyterlab
+  - cartopy
+  - shap
+  - dask
+  - netCDF4
+  - pip:
+    - torch
+    - jax==0.11.1
+# Run the following command to create the environment:
+#   conda env create /scratch/andrear/envs/SEB_NN --file environment_NN.yml 
